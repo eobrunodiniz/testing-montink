@@ -30,7 +30,7 @@ class OrderAdminController extends Controller
      */
     public function index(): View
     {
-        $list = $this->repo->all() ?? $this->repo->all();
+        $list = $this->repo->all();
         return view('orders.index', ['orders' => $list]);
     }
 

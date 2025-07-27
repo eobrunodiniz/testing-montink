@@ -59,7 +59,6 @@ class ProductCrudTest extends TestCase
     #[Test]
     public function it_can_update_a_product_and_its_stock()
     {
-        // primeiro cria produto + estoque via factory
         $product = Product::factory()->create([
             'name'  => 'Origem',
             'price' => 100.00,
