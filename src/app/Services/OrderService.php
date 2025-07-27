@@ -5,8 +5,12 @@ namespace App\Services;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Repositories\ICouponRepository;
-use App\Services\CartService;
 
+/**
+ * Serviço responsável pelo processamento dos pedidos.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class OrderService
 {
     public function __construct(
@@ -15,23 +19,21 @@ class OrderService
     ) {}
 
     /**
-     * Coloca o pedido, persiste no banco, decrementa estoque e retorna o modelo Order.
+     * Registra um novo pedido e atualiza o estoque.
+     *
+     * @param  array  $addressData  Dados de endereço
+     * @param  string|null  $couponCode  Código do cupom de desconto
+     * @param  string  $email  E-mail do comprador
      */
     public function placeOrder(array $addressData, ?string $couponCode, string $email): Order
     {
-        // Itens do carrinho em sessão
         $items = session()->get(CartService::SESSION_KEY, []);
-
-        // Calcula subtotal
         $subtotal = array_sum(array_map(
-            fn($item) => $item['price'] * $item['qty'],
+            fn ($item) => $item['price'] * $item['qty'],
             $items
         ));
-
-        // Calcula frete
         $shipping = $this->cartService->shipping();
 
-        // Aplica cupom se fornecido e válido
         $discount = 0;
         $coupon_id = null;
         if ($couponCode) {
@@ -43,37 +45,30 @@ class OrderService
                 $coupon_id = $coupon->id;
             }
         }
-
-        // Total final = subtotal + frete - desconto
         $total = $subtotal + $shipping - $discount;
-
-        // Persiste o pedido
         $order = Order::create([
-            'items'       => $items,
-            'subtotal'    => $subtotal,
-            'shipping'    => $shipping,
-            'discount'    => $discount,
-            'total'       => $total,
-            'coupon_id'   => $coupon_id,
-            'email'       => $email,
-            'cep'         => $addressData['cep'],
-            'street'      => $addressData['street'] ?? '',
-            'number'      => $addressData['number'],
-            'complement'  => $addressData['complement'] ?? null,
-            'district'    => $addressData['district'],
-            'city'        => $addressData['city'],
-            'state'       => $addressData['state'],
-            'status'      => 'completed',
+            'items' => $items,
+            'subtotal' => $subtotal,
+            'shipping' => $shipping,
+            'discount' => $discount,
+            'total' => $total,
+            'coupon_id' => $coupon_id,
+            'email' => $email,
+            'cep' => $addressData['cep'],
+            'street' => $addressData['street'] ?? '',
+            'number' => $addressData['number'],
+            'complement' => $addressData['complement'] ?? null,
+            'district' => $addressData['district'],
+            'city' => $addressData['city'],
+            'state' => $addressData['state'],
+            'status' => 'completed',
         ]);
 
-        // Decrementa o estoque de cada item
         foreach ($items as $item) {
             Stock::where('product_id', $item['product_id'])
-                ->where('variation',  $item['variation'])
+                ->where('variation', $item['variation'])
                 ->decrement('quantity', $item['qty']);
         }
-
-        // Limpa o carrinho da sessão
         session()->forget(CartService::SESSION_KEY);
 
         return $order;

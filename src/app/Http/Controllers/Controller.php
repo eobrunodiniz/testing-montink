@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
-{
-    //
-}
+/**
+ * Classe base para os controladores da aplicação.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
+abstract class Controller {}

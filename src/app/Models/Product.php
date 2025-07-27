@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;  // ← importe
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
+/**
+ * Modelo de produto da aplicação.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class Product extends Model
 {
-    use HasFactory;                                      // ← use aqui
+    use HasFactory;
 
     protected $fillable = ['name', 'price', 'variations'];
 
@@ -15,7 +21,10 @@ class Product extends Model
         'variations' => 'array',
     ];
 
-    public function stocks()
+    /**
+     * Relação com os estoques do produto.
+     */
+    public function stocks(): HasMany
     {
         return $this->hasMany(Stock::class);
     }

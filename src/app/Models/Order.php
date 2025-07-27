@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;  // ← importe
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * Representa um pedido realizado na aplicação.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class Order extends Model
 {
-    use HasFactory;                                      // ← use aqui
+    use HasFactory;
 
     protected $fillable = [
         'items',
@@ -24,18 +30,21 @@ class Order extends Model
         'city',
         'state',
         'status',
-        'email'
+        'email',
     ];
 
     protected $casts = [
-        'items'     => 'array',
-        'subtotal'  => 'decimal:2',
-        'shipping'  => 'decimal:2',
-        'discount'  => 'decimal:2',
-        'total'     => 'decimal:2',
+        'items' => 'array',
+        'subtotal' => 'decimal:2',
+        'shipping' => 'decimal:2',
+        'discount' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
-    public function coupon()
+    /**
+     * Cupom aplicado ao pedido, se houver.
+     */
+    public function coupon(): BelongsTo
     {
         return $this->belongsTo(Coupon::class);
     }

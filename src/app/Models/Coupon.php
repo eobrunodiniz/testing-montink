@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;  // ← importe
 
+/**
+ * Cupom de desconto disponível para pedidos.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class Coupon extends Model
 {
     use HasFactory;
@@ -15,11 +20,12 @@ class Coupon extends Model
         'discount_value',
         'min_subtotal',
         'valid_from',
-        'valid_to'
+        'valid_to',
     ];
+
     protected $casts = [
-        'valid_from'   => 'date',
-        'valid_to'     => 'date',
+        'valid_from' => 'date',
+        'valid_to' => 'date',
         'discount_value' => 'decimal:2',
         'min_subtotal' => 'decimal:2',
     ];

@@ -5,17 +5,26 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Request para validação de cupons.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class CouponRequest extends FormRequest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function rules(): array
     {
-        // pega primeiro o model “coupon” (caso você tenha route-model binding)
-        // senão pega diretamente o parâmetro numérico “id”
         $couponParam = $this->route('coupon');
         $id = $couponParam?->id ?? $this->route('id');
 
@@ -24,14 +33,13 @@ class CouponRequest extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                // agora ignora corretamente o ID do cupom que está sendo editado
                 Rule::unique('coupons', 'code')->ignore($id),
             ],
-            'discount_type'  => ['required', Rule::in(['fixed', 'percent'])],
+            'discount_type' => ['required', Rule::in(['fixed', 'percent'])],
             'discount_value' => 'numeric|min:0',
-            'min_subtotal'   => 'numeric|min:0',
-            'valid_from'     => 'nullable|date',
-            'valid_to'       => 'nullable|date|after_or_equal:valid_from',
+            'min_subtotal' => 'numeric|min:0',
+            'valid_from' => 'nullable|date',
+            'valid_to' => 'nullable|date|after_or_equal:valid_from',
         ];
     }
 }
