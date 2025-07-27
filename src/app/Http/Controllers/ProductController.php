@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
-use App\Services\ProductService;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
@@ -13,7 +13,8 @@ class ProductController extends Controller
     /**
      * Injeta o serviço de produtos.
      *
-     * @param ProductService $service Serviço responsável pela lógica de produtos.
+     * @param  ProductService  $service  Serviço responsável pela lógica de produtos.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function __construct(private ProductService $service) {}
@@ -21,32 +22,32 @@ class ProductController extends Controller
     /**
      * Exibe a lista de produtos cadastrados.
      *
-     * @return View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function index(): View
     {
         $products = $this->service->list();
+
         return view('products.index', compact('products'));
     }
 
     /**
      * Exibe o formulário de criação de produto.
      *
-     * @return View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function create(): View
     {
-        $product = new Product();
+        $product = new Product;
+
         return view('products.create', compact('product'));
     }
 
     /**
      * Salva um novo produto no banco de dados.
      *
-     * @param ProductRequest $request Dados validados do produto.
-     * @return RedirectResponse
+     * @param  ProductRequest  $request  Dados validados do produto.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function store(ProductRequest $request): RedirectResponse
@@ -64,22 +65,23 @@ class ProductController extends Controller
     /**
      * Exibe o formulário de edição de um produto.
      *
-     * @param int $id ID do produto.
-     * @return View
+     * @param  int  $id  ID do produto.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function edit(int $id): View
     {
         $product = $this->service->find($id);
+
         return view('products.edit', compact('product'));
     }
 
     /**
      * Atualiza um produto existente.
      *
-     * @param ProductRequest $request Dados validados do produto.
-     * @param int $id ID do produto.
-     * @return RedirectResponse
+     * @param  ProductRequest  $request  Dados validados do produto.
+     * @param  int  $id  ID do produto.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function update(ProductRequest $request, int $id): RedirectResponse
@@ -98,13 +100,14 @@ class ProductController extends Controller
     /**
      * Remove um produto do banco de dados.
      *
-     * @param int $id ID do produto.
-     * @return RedirectResponse
+     * @param  int  $id  ID do produto.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function destroy(int $id): RedirectResponse
     {
         $this->service->destroy($id);
+
         return to_route('products.index')
             ->with('success', 'Produto removido.');
     }

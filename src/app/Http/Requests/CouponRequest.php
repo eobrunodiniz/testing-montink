@@ -35,11 +35,11 @@ class CouponRequest extends FormRequest
                 'max:50',
                 Rule::unique('coupons', 'code')->ignore($id),
             ],
-            'discount_type'  => ['required', Rule::in(['fixed', 'percent'])],
+            'discount_type' => ['required', Rule::in(['fixed', 'percent'])],
             'discount_value' => 'numeric|min:0',
-            'min_subtotal'   => 'numeric|min:0',
-            'valid_from'     => 'nullable|date',
-            'valid_to'       => 'nullable|date|after_or_equal:valid_from',
+            'min_subtotal' => 'numeric|min:0',
+            'valid_from' => 'nullable|date',
+            'valid_to' => 'nullable|date|after_or_equal:valid_from',
         ];
     }
 }

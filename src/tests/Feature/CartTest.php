@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 use App\Models\Product;
 use App\Models\Stock;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CartTest extends TestCase
 {
@@ -17,13 +17,13 @@ class CartTest extends TestCase
         Stock::factory()->create([
             'product_id' => $product->id,
             'variation' => 'P',
-            'quantity'  => 5,
+            'quantity' => 5,
         ]);
 
         $response = $this->post(route('cart.add'), [
             'product_id' => $product->id,
-            'variation'  => 'P',
-            'qty'        => 2,
+            'variation' => 'P',
+            'qty' => 2,
         ]);
 
         $response->assertRedirect();
@@ -40,7 +40,7 @@ class CartTest extends TestCase
         Stock::factory()->create([
             'product_id' => $product->id,
             'variation' => 'M',
-            'quantity'  => 3,
+            'quantity' => 3,
         ]);
 
         session([
@@ -51,8 +51,8 @@ class CartTest extends TestCase
                     'variation' => 'M',
                     'price' => 15,
                     'qty' => 1,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->post(route('cart.update'), [
@@ -78,7 +78,7 @@ class CartTest extends TestCase
         Stock::factory()->create([
             'product_id' => $product->id,
             'variation' => 'U',
-            'quantity'  => 10,
+            'quantity' => 10,
         ]);
 
         session([
@@ -89,8 +89,8 @@ class CartTest extends TestCase
                     'variation' => 'U',
                     'price' => 100,
                     'qty' => 3,
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $response = $this->get(route('cart.index'));

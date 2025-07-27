@@ -12,13 +12,8 @@ use Illuminate\Database\Eloquent\Collection;
  */
 interface IOrderRepository
 {
-    /** @return Order */
     public function create(array $data): Order;
 
-    /**
-     * @param int $id
-     * @return Order|null
-     */
     public function find(int $id): ?Order;
 
     /**
@@ -26,11 +21,7 @@ interface IOrderRepository
      */
     public function updateStatus(int $id, string $status): Order;
 
-    /**
-     * @param int $id
-     */
     public function delete(int $id): void;
 
-    /** @return Collection */
     public function all(): Collection;
 }

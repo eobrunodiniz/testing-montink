@@ -17,11 +17,11 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'        => 'string|max:255',
-            'price'       => 'numeric|min:0',
-            'variations'  => 'array|min:1',
+            'name' => 'string|max:255',
+            'price' => 'numeric|min:0',
+            'variations' => 'array|min:1',
             'variations.*' => 'string|max:100',
-            'quantities'  => 'array|min:1',
+            'quantities' => 'array|min:1',
             'quantities.*' => 'integer|min:0',
         ];
     }
