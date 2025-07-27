@@ -1,0 +1,45 @@
+# Dockerfile.dev
+
+FROM php:8.4-fpm
+
+# 1. Instala dependências de SO e extensões PHP
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    zip \
+    unzip \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    nodejs \
+    npm \
+  && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# 2. Composer global
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+# 3. Definir diretório de trabalho
+WORKDIR /var/www
+
+# 4. Copiar composer.json antes para “cachear” dependências
+COPY src/composer.json src/composer.lock /var/www/
+
+# 5. Instalar dependências sem executar scripts (artisan ainda não existe)
+RUN composer install --prefer-dist --no-progress --no-suggest --no-scripts
+
+# 6. Copiar restante da aplicação
+COPY src/ /var/www
+
+# 7. Executar manualmente o package discovery
+RUN php artisan package:discover --ansi
+
+# 8. Instalar pacotes Node para front (Bootstrap, jQuery etc)
+RUN npm install
+
+# 9. Ajusta permissões para storage e cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+  && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+# 10. Expõe porta e inicia PHP-FPM
+EXPOSE 9000
+CMD ["php-fpm"]
