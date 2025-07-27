@@ -6,8 +6,10 @@ use App\Http\Requests\CheckoutRequest;
 use App\Mail\OrderPlaced;
 use App\Services\CartService;
 use App\Services\OrderService;
+use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class CheckoutController extends Controller
 {
@@ -29,7 +31,7 @@ class CheckoutController extends Controller
      * @return \Illuminate\View\View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function index(): \Illuminate\View\View
+    public function index(): View
     {
         $items    = $this->cart->all();
         $subtotal = $this->cart->subtotal();
@@ -71,9 +73,9 @@ class CheckoutController extends Controller
      * @return \Illuminate\View\View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function thanks(int $id): \Illuminate\View\View
+    public function thanks(int $id): View
     {
-        $order = \App\Models\Order::findOrFail($id);
+        $order = Order::findOrFail($id);
 
         return view('checkout.thanks', compact('order'));
     }

@@ -2,21 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CartService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class CartController extends Controller
 {
+    public function __construct(private CartService $cart) {}
     /**
      * Exibe o conteúdo do carrinho de compras.
      *
-     * @return \Illuminate\View\View
+     * @return View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function index()
+    public function index(): View
     {
-        $items    = session()->get(\App\Services\CartService::SESSION_KEY, []);
-        $subtotal = app(\App\Services\CartService::class)->subtotal();
-        $shipping = app(\App\Services\CartService::class)->shipping();
+        $items    = $this->cart->all();
+        $subtotal = $this->cart->subtotal();
+        $shipping = $this->cart->shipping();
         $total    = $subtotal + $shipping;
 
         return view('cart.index', compact('items', 'subtotal', 'shipping', 'total'));
@@ -25,13 +29,13 @@ class CartController extends Controller
     /**
      * Adiciona um item ao carrinho de compras.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request $request
+     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function add(Request $request)
+    public function add(Request $request): RedirectResponse
     {
-        app(\App\Services\CartService::class)->add(
+        $this->cart->add(
             $request->input('product_id'),
             $request->input('variation'),
             $request->input('qty'),
@@ -45,13 +49,13 @@ class CartController extends Controller
     /**
      * Atualiza a quantidade ou variação de um item no carrinho.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request $request
+     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
-        app(\App\Services\CartService::class)->update(
+        $this->cart->update(
             $request->input('product_id'),
             $request->input('variation'),
             $request->input('qty'),
@@ -65,13 +69,13 @@ class CartController extends Controller
     /**
      * Remove um item do carrinho de compras.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  Request $request
+     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function remove(Request $request)
+    public function remove(Request $request): RedirectResponse
     {
-        app(\App\Services\CartService::class)->remove(
+        $this->cart->remove(
             $request->input('product_id'),
             $request->input('variation'),
         );
@@ -84,10 +88,10 @@ class CartController extends Controller
     /**
      * Redireciona para a rota de checkout do carrinho.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function checkout()
+    public function checkout(): RedirectResponse
     {
         return redirect()->route('cart.checkout');
     }

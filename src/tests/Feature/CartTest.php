@@ -13,7 +13,6 @@ class CartTest extends TestCase
 
     public function test_add_item_to_cart_and_session()
     {
-        // Cria produto e estoque
         $product = Product::factory()->create(['price' => 10]);
         Stock::factory()->create([
             'product_id' => $product->id,
@@ -21,7 +20,6 @@ class CartTest extends TestCase
             'quantity'  => 5,
         ]);
 
-        // Adiciona ao carrinho
         $response = $this->post(route('cart.add'), [
             'product_id' => $product->id,
             'variation'  => 'P',
@@ -31,7 +29,6 @@ class CartTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHas('success', 'Item adicionado ao carrinho.');
 
-        // Verifica sessão “cart”
         $cart = session('cart');
         $this->assertArrayHasKey("{$product->id}:P", $cart);
         $this->assertEquals(2, $cart["{$product->id}:P"]['qty']);
@@ -39,7 +36,6 @@ class CartTest extends TestCase
 
     public function test_update_and_remove_item_in_cart()
     {
-        // Reuso: cria produto e estoque
         $product = Product::factory()->create(['price' => 15]);
         Stock::factory()->create([
             'product_id' => $product->id,
@@ -47,7 +43,6 @@ class CartTest extends TestCase
             'quantity'  => 3,
         ]);
 
-        // Preenche manualmente a sessão
         session([
             'cart' => [
                 "{$product->id}:M" => [
@@ -60,7 +55,6 @@ class CartTest extends TestCase
             ]
         ]);
 
-        // Atualiza quantidade
         $this->post(route('cart.update'), [
             'product_id' => $product->id,
             'variation' => 'M',
@@ -69,7 +63,6 @@ class CartTest extends TestCase
 
         $this->assertEquals(3, session('cart')["{$product->id}:M"]['qty']);
 
-        // Remove item
         $this->post(route('cart.remove'), [
             'product_id' => $product->id,
             'variation' => 'M',
@@ -88,7 +81,6 @@ class CartTest extends TestCase
             'quantity'  => 10,
         ]);
 
-        // Use qty=3 para subtotal 300 (>200)
         session([
             'cart' => [
                 "{$product->id}:U" => [

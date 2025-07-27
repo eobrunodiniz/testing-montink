@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\OrderService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class WebhookController extends Controller
 {
@@ -19,10 +20,10 @@ class WebhookController extends Controller
      * Manipula requisições de webhook para atualização ou cancelamento de pedidos.
      *
      * @param Request $req Requisição HTTP contendo os dados do pedido e status.
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function handle(Request $req)
+    public function handle(Request $req): JsonResponse
     {
         $data = $req->validate([
             'id'     => 'required|integer|exists:orders,id',

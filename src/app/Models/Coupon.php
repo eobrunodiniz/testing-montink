@@ -3,8 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;  // ← importe
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * Cupom de desconto disponível para pedidos.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class Coupon extends Model
 {
     use HasFactory;

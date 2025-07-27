@@ -4,8 +4,16 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Request para validação de produtos.
+ *
+ * @author Bruno Diniz <https://github.com/eobrunodiniz>
+ */
 class ProductRequest extends FormRequest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function rules(): array
     {
         return [
@@ -18,6 +26,9 @@ class ProductRequest extends FormRequest
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function authorize(): bool
     {
         return true;

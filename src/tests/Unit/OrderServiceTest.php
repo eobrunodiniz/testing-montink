@@ -31,7 +31,6 @@ class OrderServiceTest extends TestCase
 
     public function test_place_order_calculations_and_stock_decrement()
     {
-        // Preparar produto e stock
         $product = Product::factory()->create(['price' => 30.00]);
 
         Stock::factory()->create([
@@ -40,7 +39,6 @@ class OrderServiceTest extends TestCase
             'quantity'  => 100,
         ]);
 
-        // Preparar cupom 10% off sem min_subtotal
         $coupon = Coupon::factory()->create([
             'discount_type' => 'percent',
             'discount_value' => 10,
@@ -49,7 +47,6 @@ class OrderServiceTest extends TestCase
             'valid_to'       => now()->addDay(),
         ]);
 
-        // Sem depender de HTTP, vamos fake só para não quebrar
         Http::fake([
             'viacep.com.br/*' => Http::response([], 200)
         ]);
@@ -64,13 +61,10 @@ class OrderServiceTest extends TestCase
             'state'
         ];
 
-        // 3) Coloca 2 unidades desse produto no carrinho
         $this->cart->add($product->id, 'G', 2);
 
-        // Exemplo mínimo; seu service espera keys corretas
         $addressData = array_combine($address, array_fill(0, count($address), 'X'));
 
-        // Place order com qty=2 → subtotal=60 → frete=15 → desconto=6 → total=69
         $order = $this->service->placeOrder($addressData, $coupon->code, 'bruno.diniz@montink.com.br');
 
         $this->assertEquals(60.00, $order->subtotal);
