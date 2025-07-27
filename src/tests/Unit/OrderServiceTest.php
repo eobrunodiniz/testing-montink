@@ -2,20 +2,21 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
-use App\Services\OrderService;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Stock;
-use App\Models\Coupon;
 use App\Services\CartService;
+use App\Services\OrderService;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
+use Tests\TestCase;
 
 class OrderServiceTest extends TestCase
 {
     use RefreshDatabase;
 
     private CartService $cart;
+
     private OrderService $service;
 
     protected function setUp(): void
@@ -36,19 +37,19 @@ class OrderServiceTest extends TestCase
         Stock::factory()->create([
             'product_id' => $product->id,
             'variation' => 'G',
-            'quantity'  => 100,
+            'quantity' => 100,
         ]);
 
         $coupon = Coupon::factory()->create([
             'discount_type' => 'percent',
             'discount_value' => 10,
-            'min_subtotal'   => 5,
-            'valid_from'     => now()->subDay(),
-            'valid_to'       => now()->addDay(),
+            'min_subtotal' => 5,
+            'valid_from' => now()->subDay(),
+            'valid_to' => now()->addDay(),
         ]);
 
         Http::fake([
-            'viacep.com.br/*' => Http::response([], 200)
+            'viacep.com.br/*' => Http::response([], 200),
         ]);
 
         $address = [
@@ -58,7 +59,7 @@ class OrderServiceTest extends TestCase
             'complement',
             'district',
             'city',
-            'state'
+            'state',
         ];
 
         $this->cart->add($product->id, 'G', 2);
@@ -74,8 +75,8 @@ class OrderServiceTest extends TestCase
 
         $this->assertDatabaseHas('stocks', [
             'product_id' => $product->id,
-            'variation'  => 'G',
-            'quantity'   => 98,
+            'variation' => 'G',
+            'quantity' => 98,
         ]);
     }
 }

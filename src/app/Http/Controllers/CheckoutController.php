@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
 use App\Mail\OrderPlaced;
+use App\Models\Order;
 use App\Services\CartService;
 use App\Services\OrderService;
-use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
@@ -16,27 +16,27 @@ class CheckoutController extends Controller
     /**
      * Injeta as dependências dos serviços de pedido e carrinho.
      *
-     * @param OrderService $orders Serviço de pedidos.
-     * @param CartService $cart Serviço de carrinho de compras.
+     * @param  OrderService  $orders  Serviço de pedidos.
+     * @param  CartService  $cart  Serviço de carrinho de compras.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function __construct(
         protected OrderService $orders,
-        protected CartService  $cart
+        protected CartService $cart
     ) {}
 
     /**
      * Exibe a página de checkout com os dados do carrinho.
      *
-     * @return \Illuminate\View\View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function index(): View
     {
-        $items    = $this->cart->all();
+        $items = $this->cart->all();
         $subtotal = $this->cart->subtotal();
         $shipping = $this->cart->shipping();
-        $total    = $this->cart->total();
+        $total = $this->cart->total();
 
         return view('checkout.index', compact('items', 'subtotal', 'shipping', 'total'));
     }
@@ -44,8 +44,8 @@ class CheckoutController extends Controller
     /**
      * Processa o pedido, envia e-mail de confirmação, limpa o carrinho e redireciona para a tela de agradecimento.
      *
-     * @param CheckoutRequest $request Dados validados do checkout.
-     * @return RedirectResponse
+     * @param  CheckoutRequest  $request  Dados validados do checkout.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function store(CheckoutRequest $request): RedirectResponse
@@ -69,8 +69,8 @@ class CheckoutController extends Controller
     /**
      * Exibe a página de agradecimento após a finalização do pedido.
      *
-     * @param int $id ID do pedido.
-     * @return \Illuminate\View\View
+     * @param  int  $id  ID do pedido.
+     *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function thanks(int $id): View

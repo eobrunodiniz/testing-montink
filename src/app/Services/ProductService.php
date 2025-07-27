@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\Product as ProductModel;
-use App\Repositories\IProductRepository;
 use App\Models\Stock;
+use App\Repositories\IProductRepository;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -30,9 +30,6 @@ class ProductService
     /**
      * Cadastra um novo produto com suas variações e estoque.
      *
-     * @param array $data
-     * @param array $variations
-     * @param array $quantities
      * @return ProductModel
      */
     public function store(array $data, array $variations, array $quantities)
@@ -44,8 +41,8 @@ class ProductService
             foreach ($variations as $i => $var) {
                 Stock::create([
                     'product_id' => $product->id,
-                    'variation'  => $var,
-                    'quantity'   => $quantities[$i] ?? 0,
+                    'variation' => $var,
+                    'quantity' => $quantities[$i] ?? 0,
                 ]);
             }
 
@@ -66,8 +63,8 @@ class ProductService
             foreach ($variations as $i => $var) {
                 Stock::create([
                     'product_id' => $product->id,
-                    'variation'  => $var,
-                    'quantity'   => $quantities[$i] ?? 0,
+                    'variation' => $var,
+                    'quantity' => $quantities[$i] ?? 0,
                 ]);
             }
 
@@ -85,9 +82,6 @@ class ProductService
 
     /**
      * Busca um produto pelo ID.
-     *
-     * @param int $id
-     * @return ProductModel|null
      */
     public function find(int $id): ?ProductModel
     {

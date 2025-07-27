@@ -7,6 +7,4 @@ namespace App\Http\Controllers;
  *
  * @author Bruno Diniz <https://github.com/eobrunodiniz>
  */
-abstract class Controller
-{
-}
+abstract class Controller {}

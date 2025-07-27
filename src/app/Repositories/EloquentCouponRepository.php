@@ -12,39 +12,40 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class EloquentCouponRepository implements ICouponRepository
 {
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function all(): Collection
     {
         return Coupon::orderBy('code')->get();
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function find(int $id): ?Coupon
     {
         return Coupon::find($id);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function create(array $data): Coupon
     {
         return Coupon::create($data);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function update(int $id, array $data): Coupon
     {
         $coupon = $this->find($id);
         $coupon->update($data);
+
         return $coupon;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function delete(int $id): void
     {
         Coupon::destroy($id);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function findByCode(string $code): ?Coupon
     {
         return Coupon::where('code', $code)->first();

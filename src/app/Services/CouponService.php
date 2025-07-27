@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use App\Repositories\ICouponRepository;
 use App\Models\Coupon;
+use App\Repositories\ICouponRepository;
 
 /**
  * Serviço de gerenciamento de cupons de desconto.
@@ -27,9 +27,6 @@ class CouponService
 
     /**
      * Cria um novo cupom.
-     *
-     * @param array $data
-     * @return Coupon
      */
     public function store(array $data): Coupon
     {
@@ -38,9 +35,6 @@ class CouponService
 
     /**
      * Busca um cupom pelo ID.
-     *
-     * @param int $id
-     * @return Coupon|null
      */
     public function find(int $id): ?Coupon
     {

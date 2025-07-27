@@ -37,8 +37,5 @@ class AppServiceProvider extends ServiceProvider
      *
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
-    public function boot(): void
-    {
-        
-    }
+    public function boot(): void {}
 }

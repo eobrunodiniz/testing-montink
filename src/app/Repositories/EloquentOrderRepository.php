@@ -12,34 +12,35 @@ use Illuminate\Database\Eloquent\Collection;
  */
 class EloquentOrderRepository implements IOrderRepository
 {
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function create(array $data): Order
     {
         return Order::create($data);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function find(int $id): ?Order
     {
         return Order::find($id);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function updateStatus(int $id, string $status): Order
     {
         $order = $this->find($id);
         $order->status = $status;
         $order->save();
+
         return $order;
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function delete(int $id): void
     {
         Order::destroy($id);
     }
 
-    /** @inheritDoc */
+    /** {@inheritDoc} */
     public function all(): Collection
     {
         return Order::with('coupon')->orderBy('id', 'desc')->get();

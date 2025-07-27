@@ -10,18 +10,18 @@ use Illuminate\View\View;
 class CartController extends Controller
 {
     public function __construct(private CartService $cart) {}
+
     /**
      * Exibe o conteúdo do carrinho de compras.
      *
-     * @return View
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function index(): View
     {
-        $items    = $this->cart->all();
+        $items = $this->cart->all();
         $subtotal = $this->cart->subtotal();
         $shipping = $this->cart->shipping();
-        $total    = $subtotal + $shipping;
+        $total = $subtotal + $shipping;
 
         return view('cart.index', compact('items', 'subtotal', 'shipping', 'total'));
     }
@@ -29,8 +29,6 @@ class CartController extends Controller
     /**
      * Adiciona um item ao carrinho de compras.
      *
-     * @param  Request $request
-     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function add(Request $request): RedirectResponse
@@ -49,8 +47,6 @@ class CartController extends Controller
     /**
      * Atualiza a quantidade ou variação de um item no carrinho.
      *
-     * @param  Request $request
-     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function update(Request $request): RedirectResponse
@@ -69,8 +65,6 @@ class CartController extends Controller
     /**
      * Remove um item do carrinho de compras.
      *
-     * @param  Request $request
-     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function remove(Request $request): RedirectResponse
@@ -88,7 +82,6 @@ class CartController extends Controller
     /**
      * Redireciona para a rota de checkout do carrinho.
      *
-     * @return RedirectResponse
      * @author Bruno Diniz <https://github.com/eobrunodiniz>
      */
     public function checkout(): RedirectResponse
